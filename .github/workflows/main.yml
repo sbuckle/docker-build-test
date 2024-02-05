@@ -31,6 +31,7 @@ jobs:
           load: push
           tags: ${{ env.TEST_TAG }}
   test:
+    runs-on: ubuntu-latest
     container:
       image: ${{ env.TEST_TAG }}
       credentials:
