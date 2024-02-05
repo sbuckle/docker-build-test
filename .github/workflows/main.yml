@@ -33,7 +33,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     container:
-      image: ${{ secrets.DOCKERHUB_USERNAME }}/test:test
+      image: sbucklewebteq/test:test
       credentials:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
