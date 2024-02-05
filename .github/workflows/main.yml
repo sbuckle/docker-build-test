@@ -3,6 +3,10 @@ name: ci
 on:
   push:
 
+env:
+  TEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/test:test
+  LATEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/test:test
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -24,6 +28,18 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          file: ./Dockerfile
+          load: true
+          tags: ${{ env.TEST_TAG }}
+      -
+        name: Test
+        container: ${{ env.TEST_TAG }}
+        run: |
+          curl -V
+      -
+        name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/test:latest
+          tags: ${{ env.LATEST_TAG }}
+
