@@ -30,16 +30,4 @@ jobs:
           context: .
           load: true
           tags: ${{ env.TEST_TAG }}
-      -
-        name: Test
-        container: ${{ env.TEST_TAG }}
-        run: |
-          curl -V
-      -
-        name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          push: true
-          tags: ${{ env.LATEST_TAG }}
 
