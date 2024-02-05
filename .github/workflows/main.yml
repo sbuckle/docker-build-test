@@ -10,6 +10,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
     steps:
       -
         name: Checkout
@@ -30,11 +32,14 @@ jobs:
           context: .
           push: true
           tags: ${{ env.TEST_TAG }}
+      -
+        id: tag
+        run: echo "tag=${{ env.TEST_TAG }}" >> "$GITHUB_OUTPUT"
   test:
     needs: build
     runs-on: ubuntu-latest
     container:
-      image: sbucklewebteq/test:test
+      image: ${{ needs.build.outputs.tag }}
       credentials:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
