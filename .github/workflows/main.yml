@@ -28,6 +28,17 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: .
-          load: true
+          load: push
           tags: ${{ env.TEST_TAG }}
+  test:
+    container:
+      image: ${{ env.TEST_TAG }}
+      credentials:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+    steps:
+      -
+        name: Test
+        run: |
+          curl -V
 
