@@ -46,7 +46,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/workflows/greeting.yml@master
+      - uses: ./.github/workflows/greeting.yml
         with:
           name: Bob
       -
