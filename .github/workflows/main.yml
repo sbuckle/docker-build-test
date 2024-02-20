@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: sbuckle/docker-build-test/.github/workflows/greeting.yml@master
         with:
-          name: Bob
+          name: Dave
       -
         name: Test
         run: |
