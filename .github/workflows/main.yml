@@ -37,7 +37,6 @@ jobs:
         run: echo "tag=${{ env.TEST_TAG }}" >> "$GITHUB_OUTPUT"
   greeting:
     needs: build
-    environment: test
     uses: sbuckle/docker-build-test/.github/workflows/greeting.yml@master
     with:
       name: Bob
