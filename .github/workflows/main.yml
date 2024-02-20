@@ -35,6 +35,13 @@ jobs:
       -
         id: tag
         run: echo "tag=${{ env.TEST_TAG }}" >> "$GITHUB_OUTPUT"
+  greeting:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: test
+    uses: sbuckle/docker-build-test/.github/workflows/greeting.yml@master
+    with:
+      name: Bob
   test:
     needs: build
     runs-on: ubuntu-latest
@@ -45,9 +52,6 @@ jobs:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     steps:
-      - uses: sbuckle/docker-build-test/.github/workflows/greeting.yml@master
-        with:
-          name: Dave
       -
         name: Test
         run: |
