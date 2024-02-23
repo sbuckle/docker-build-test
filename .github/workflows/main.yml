@@ -46,7 +46,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     steps:
       -
-        name: Test
+        name: Test step
         run: |
           curl -V
 
