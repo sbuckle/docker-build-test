@@ -36,7 +36,6 @@ jobs:
         with:
           context: .
           push: true
-          provenance: false
           build-args: CACHE_BUSTER="${{ github.sha }}"
           cache-from: type=registry,ref=${{ steps.repo_slug.outputs.result }}
           cache-to: type=inline
