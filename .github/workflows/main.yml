@@ -5,7 +5,7 @@ on:
 
 env:
   TEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/test:test
-  LATEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/test:test
+  LATEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/test:latest
 
 jobs:
   build:
@@ -31,7 +31,12 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.TEST_TAG }}
+          build-args: CACHE_BUSTER="${{ github.sha }}"
+          cache-from: type=registry,ref=$TEST_TAG
+          cache-to: inline
+          tags: |
+            ${{ env.TEST_TAG }}
+            ${{ env.LATEST_TAG }}
       -
         id: tag
         run: echo "tag=${{ env.TEST_TAG }}" >> "$GITHUB_OUTPUT"
