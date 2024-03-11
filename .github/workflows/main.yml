@@ -30,7 +30,7 @@ jobs:
           push: true
           build-args: CACHE_BUSTER="${{ github.sha }}"
           cache-from: type=registry,ref=$TEST_TAG
-          cache-to: inline
+          cache-to: type=inline
           tags: |
             ${{ env.TEST_TAG }}
             ${{ env.LATEST_TAG }}
