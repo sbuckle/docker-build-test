@@ -5,7 +5,8 @@ on:
 
 env:
   TEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/test:test
-  LATEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/test:test
+  LATEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/test:latest
+  BUILD_CACHE: ${{ secrets.DOCKERHUB_USERNAME }}/test:buildcache
 
 jobs:
   build:
@@ -23,15 +24,28 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
-        name: Set Buildx
+        name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      -
+        name: Sanitize repo slug
+        uses: actions/github-script@v6
+        id: repo_slug
+        with:
+          result-encoding: string
+          script: return '${{ env.BUILD_CACHE }}'.toLowerCase()
       -
         name: Build
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ env.TEST_TAG }}
+          provenance: false
+          build-args: CACHE_BUSTER="${{ github.sha }}"
+          cache-from: type=gha,scope=buildcache
+          cache-to: type=gha,mode=max,scope=buildcache
+          tags: |
+            ${{ env.TEST_TAG }}
+            ${{ env.LATEST_TAG }}
       -
         id: tag
         run: echo "tag=${{ env.TEST_TAG }}" >> "$GITHUB_OUTPUT"
