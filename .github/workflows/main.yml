@@ -41,8 +41,8 @@ jobs:
           push: true
           provenance: false
           build-args: CACHE_BUSTER="${{ github.sha }}"
-          cache-from: type=registry,ref=${{ steps.repo_slug.outputs.result }}
-          cache-to: type=registry,ref=${{ steps.repo_slug.outputs.result }},mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max,scope=buildcache
           tags: |
             ${{ env.TEST_TAG }}
             ${{ env.LATEST_TAG }}
