@@ -6,7 +6,6 @@ on:
 env:
   TEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/test:test
   LATEST_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/test:latest
-  BUILD_CACHE: ${{ secrets.DOCKERHUB_USERNAME }}/test:buildcache
 
 jobs:
   build:
@@ -29,7 +28,7 @@ jobs:
         id: repo_slug
         with:
           result-encoding: string
-          script: return '${{ env.BUILD_CACHE }}'.toLowerCase()
+          script: return '${{ env.TEST_TAG }}'.toLowerCase()
       -
         name: Build
         uses: docker/build-push-action@v5
@@ -37,7 +36,7 @@ jobs:
           context: .
           push: true
           build-args: CACHE_BUSTER="${{ github.sha }}"
-          cache-from: type=registry,ref=${{ steps.repo_slug.outputs.result }}
+          cache-from: type=registry,ref=${{ env.TEST_TAG }}
           cache-to: type=inline
           tags: |
             ${{ env.TEST_TAG }}
