@@ -23,13 +23,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       -
+        name: Sanitize repo slug
+        uses: actions/github-script@v6
+        id: repo_slug
+        with:
+          result-encoding: string
+          script: return '${{ env.TEST_TAG }}'.toLowerCase()
+      -
         name: Build
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
           build-args: CACHE_BUSTER="${{ github.sha }}"
-          cache-from: type=registry,ref=$TEST_TAG
+          cache-from: type=registry,ref=${{ steps.repo_slug.outputs.result }}
           cache-to: type=inline
           tags: |
             ${{ env.TEST_TAG }}
