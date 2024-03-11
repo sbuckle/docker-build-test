@@ -40,7 +40,6 @@ jobs:
           cache-to: type=inline
           tags: |
             ${{ env.TEST_TAG }}
-            ${{ env.LATEST_TAG }}
       -
         id: tag
         run: echo "tag=${{ env.TEST_TAG }}" >> "$GITHUB_OUTPUT"
