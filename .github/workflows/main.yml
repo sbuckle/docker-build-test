@@ -32,14 +32,12 @@ jobs:
       -
         name: Build
         uses: docker/build-push-action@v5
-        env:
-          DOCKER_BUILDKIT: 1
         with:
           context: .
           push: true
           build-args: CACHE_BUSTER="${{ github.sha }}"
-          cache-from: ${{ env.TEST_TAG }}
-          cache-to: inline
+          cache-from: type=registry,ref=${{ env.TEST_TAG }}
+          cache-to: type=inline
           tags: |
             ${{ env.TEST_TAG }}
       -
