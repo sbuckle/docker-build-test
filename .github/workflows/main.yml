@@ -36,14 +36,16 @@ jobs:
           context: .
           push: true
           build-args: CACHE_BUSTER="${{ github.sha }}"
-          cache-from: type=registry,ref=${{ env.TEST_TAG }}
-          cache-to: type=inline
+          cache-from: ${{ env.TEST_TAG }}
+          cache-to: inline
           tags: |
             ${{ env.TEST_TAG }}
       -
         name: Build again
+        env:
+          DOCKER_BUILDKIT: 1
         run: |
-          DOCKER_BUILDKIT=1 docker build --cache-from ${{ env.TEST_TAG }} --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg CACHE_BUSTER="${{ github.sha }}" -t ${{ env.TEST_TAG }} .
+          docker build --cache-from ${{ env.TEST_TAG }} --build-arg BUILDKIT_INLINE_CACHE=1 --build-arg CACHE_BUSTER="${{ github.sha }}" -t ${{ env.TEST_TAG }} .
       -
         id: tag
         run: echo "tag=${{ env.TEST_TAG }}" >> "$GITHUB_OUTPUT"
