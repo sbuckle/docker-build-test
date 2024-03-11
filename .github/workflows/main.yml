@@ -41,7 +41,7 @@ jobs:
           push: true
           provenance: false
           build-args: CACHE_BUSTER="${{ github.sha }}"
-          cache-from: type=gha
+          cache-from: type=gha,scope=buildcache
           cache-to: type=gha,mode=max,scope=buildcache
           tags: |
             ${{ env.TEST_TAG }}
