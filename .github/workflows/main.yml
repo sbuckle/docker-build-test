@@ -41,6 +41,7 @@ jobs:
           build-args: CACHE_BUSTER="${{ github.sha }}"
           cache-from: type=registry,ref=${{ env.TEST_TAG }}
           cache-to: inline
+          provenance: false
           tags: |
             ${{ env.TEST_TAG }}
       -
