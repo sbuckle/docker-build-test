@@ -10,7 +10,7 @@ env:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, build]
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
     steps:
@@ -51,7 +51,7 @@ jobs:
         run: echo "tag=${{ env.TEST_TAG }}" >> "$GITHUB_OUTPUT"
   test:
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, build]
     environment: test
     container:
       image: ${{ needs.build.outputs.tag }}
