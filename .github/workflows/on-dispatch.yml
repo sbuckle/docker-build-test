@@ -1,0 +1,10 @@
+name: Update Image Reference
+on:
+  repository_dispatch:
+    types: example-trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Building..."
