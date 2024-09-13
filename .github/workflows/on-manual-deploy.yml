@@ -1,0 +1,46 @@
+name: Manually trigger a build
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        required: true
+        type: choice
+        options:
+          - sit
+          - pre
+          - prod
+      version:
+        required: true
+        type: string
+      stackname:
+        required: true
+        type: string
+  workflow_call:
+    inputs:
+      environment:
+        required: true
+        type: string
+      version:
+        required: true
+        type: string
+      stackname:
+        required: true
+        type: string
+    secrets:
+      APP_ID:
+        required: true
+
+permissions:
+  id-token: write
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo
+        env:
+          APP_ID: ${{ secrets.APP_ID }}
+        run: echo ${{ inputs.environment }}
+
